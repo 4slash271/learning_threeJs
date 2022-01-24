@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+three.js
+========
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![NPM Package][npm]][npm-url]
+[![Build Size][build-size]][build-size-url]
+[![NPM Downloads][npm-downloads]][npmtrends-url]
+[![Language Grade][lgtm]][lgtm-url]
 
-## Available Scripts
+#### JavaScript 3D library ####
 
-In the project directory, you can run:
+The aim of the project is to create an easy to use, lightweight, cross-browser, general purpose 3D library. The current builds only include a WebGL renderer but WebGPU (experimental), SVG and CSS3D renderers are also available in the examples.
 
-### `npm start`
+[Examples](https://threejs.org/examples/) &mdash;
+[Documentation](https://threejs.org/docs/) &mdash;
+[Wiki](https://github.com/mrdoob/three.js/wiki) &mdash;
+[Migrating](https://github.com/mrdoob/three.js/wiki/Migration-Guide) &mdash;
+[Questions](http://stackoverflow.com/questions/tagged/three.js) &mdash;
+[Forum](https://discourse.threejs.org/) &mdash;
+[Slack](https://join.slack.com/t/threejs/shared_invite/zt-rnuegz5e-FQpc6YboDVW~5idlp7GfDw) &mdash;
+[Discord](https://discordapp.com/invite/HF4UdyF)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Usage ###
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This code creates a scene, a camera, and a geometric cube, and it adds the cube to the scene. It then creates a `WebGL` renderer for the scene and camera, and it adds that viewport to the `document.body` element. Finally, it animates the cube within the scene for the camera.
 
-### `npm test`
+```javascript
+import * as THREE from './js/three.module.js';
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+let camera, scene, renderer;
+let geometry, material, mesh;
 
-### `npm run build`
+init();
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function init() {
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+	camera.position.z = 1;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+	scene = new THREE.Scene();
 
-### `npm run eject`
+	geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+	material = new THREE.MeshNormalMaterial();
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+	mesh = new THREE.Mesh( geometry, material );
+	scene.add( mesh );
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setAnimationLoop( animation );
+	document.body.appendChild( renderer.domElement );
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+function animation( time ) {
 
-## Learn More
+	mesh.rotation.x = time / 2000;
+	mesh.rotation.y = time / 1000;
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+	renderer.render( scene, camera );
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+}
+```
 
-### Code Splitting
+If everything went well, you should see [this](https://jsfiddle.net/vy29n6aj/).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Cloning this repository ###
 
-### Analyzing the Bundle Size
+Cloning the repo with all its history results in a ~2 GB download. If you don't need the whole history you can use the `depth` parameter to significantly reduce download size.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```sh
+git clone --depth=1 https://github.com/mrdoob/three.js.git
+```
 
-### Making a Progressive Web App
+### Change log ###
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+[Releases](https://github.com/mrdoob/three.js/releases)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[npm]: https://img.shields.io/npm/v/three
+[npm-url]: https://www.npmjs.com/package/three
+[build-size]: https://badgen.net/bundlephobia/minzip/three
+[build-size-url]: https://bundlephobia.com/result?p=three
+[npm-downloads]: https://img.shields.io/npm/dw/three
+[npmtrends-url]: https://www.npmtrends.com/three
+[lgtm]: https://img.shields.io/lgtm/alerts/github/mrdoob/three.js
+[lgtm-url]: https://lgtm.com/projects/g/mrdoob/three.js/
